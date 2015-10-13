@@ -1,0 +1,230 @@
+{extends file="admin-layout.tpl"}
+
+{block name="after-bootstrap-css"}
+    <link rel="stylesheet" href="{stylesheet file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css'}">
+{/block}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl l='Modules'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+
+{block name="main-content"}
+    {default_translation_domain domain='deliverydelay.bo.default'}
+
+    {if $form_error_message}
+        <div class="alert alert-danger">{$form_error_message}</div>
+    {/if}
+    <div class="edit-module">
+        <div id="wrapper" class="container">
+            <ul class="breadcrumb">
+                <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+                <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+                <li>{intl l="Delivery delay" d="deliverydelai"}</li>
+            </ul>
+
+            <div class="row">
+                <div class="col-md-12 general-block-decorator">
+                    <div class="col-md-12 title title-without-tabs">
+                        {intl l='Configuration for DeliveryDelay'}
+                    </div>
+                    {form type="deliverydelay.form" name="deliverydelay.form"}
+                        <form action="{url path='/admin/module/deliverydelay/config'}" method="post">
+                            {form_hidden_fields form=$form}
+
+                            {if $form_error}
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            {/if}
+
+                            {form_field form=$form field='success_url'}
+                                <input type="hidden" name="{$name}" value="{url path='/admin/module/DeliveryDelay'}" />
+                            {/form_field}
+
+                            {form_field form=$form field="delivery_min"}
+                                <div class="col-md-6">
+                                    <label for="{$label_attr.for}">
+                                        {$label} :
+                                    </label>
+
+                                    <input type="number" pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                                    <span class="help-block">
+                                        {intl l="Used for count the min date if the product have stock (default = 1)"}
+                                    </span>
+                                </div>
+                            {/form_field}
+
+                            {form_field form=$form field="delivery_max"}
+                                <div class="col-md-6">
+                                    <label for="{$label_attr.for}">
+                                        {$label} :
+                                    </label>
+
+                                    <input type="number" pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                                    <span class="help-block">
+                                        {intl l="Used for count the max date if the product have stock (default = 1)"}
+                                    </span>
+                                </div>
+                            {/form_field}
+
+                            {form_field form=$form field="restock_min"}
+                                <div class="col-md-6">
+                                    <label for="{$label_attr.for}">
+                                        {$label} :
+                                    </label>
+
+                                    <input type="number" pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                                    <span class="help-block">
+                                        {intl l="Used for count the min date if the product doesn't have stock (default = 1)"}
+                                    </span>
+                                </div>
+                            {/form_field}
+
+                            {form_field form=$form field="restock_max"}
+                                <div class="col-md-6">
+                                    <label for="{$label_attr.for}">
+                                        {$label} :
+                                    </label>
+
+                                    <input type="number" pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                                    <span class="help-block">
+                                        {intl l="Used for count the max date if the product doesn't have stock (default = 1)"}
+                                    </span>
+                                </div>
+                            {/form_field}
+
+                            {form_field form=$form field="exclude_weekend"}
+                            <div class="col-md-6">
+                                <label class=" col-md-6 control-label" for="{$label_attr.for}">
+                                    {$label} :
+                                    <span class="help-block">
+                                        {intl l="Set the weekend days as not livrable"}
+                                    </span>
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                </div>
+                            </div>
+                            {/form_field}
+
+                            {form_field form=$form field="exclude_easter_day"}
+                            <div class="col-md-6">
+                                <label class="col-md-6 control-label" for="{$label_attr.for}">
+                                    {$label} :
+                                    <span class="help-block">
+                                        {intl l="Set the easter day as not livrable, the date is calculated dynamically, based on current year"}
+                                    </span>
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                </div>
+                            </div>
+                            {/form_field}
+                            <div class="col-md-1 col-md-offset-11">
+                                <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Save"}">{intl l="Save"} <span class="glyphicon glyphicon-ok"></span></button>
+                            </div>
+                        </form>
+                    {/form}
+                </div>
+
+                <div class="col-md-12 general-block-decorator">
+                    <div class="col-md-12 title title-without-tabs">
+                        {intl l='Manage undeliverable date'}
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>{intl l="Date"}</th>
+                            <th>{intl l="Exlude"}</th>
+                            <th>{intl l="Action"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {form type="undeliverabledate.form" name="undeliverabledate.form"}
+                                    <form action="{url path='/admin/module/deliverydelay/undeliverabledate/add'}" method="post">
+                                        {form_hidden_fields form=$form}
+
+                                        {if $form_error}
+                                            <div class="alert alert-danger">{$form_error_message}</div>
+                                        {/if}
+
+                                        {form_field form=$form field='success_url'}
+                                            <input type="hidden" name="{$name}" value="{url path='/admin/module/DeliveryDelay'}" />
+                                        {/form_field}
+
+                                        {form_field form=$form field="date"}
+                                            <td>#</td>
+                                            <td class="input-group">
+                                                <span id="span-calendar" class="input-group-addon">
+                                                     <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                                <input id="date-picker" type="text" required name="{$name}" id="{$label_attr.for}" class="form-control" placeholder="{intl l="Click to pick a date"}"/>
+                                            </td>
+                                        {/form_field}
+                                        {form_field form=$form field="active"}
+                                            <td>
+                                                <input type="checkbox" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                                            </td>
+                                        {/form_field}
+                                        <td>
+                                            <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add new undeliverable date'}" data-toggle="modal">
+                                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                            </button>
+                                        </td>
+                                    </form>
+                                {/form}
+                            </tr>
+                            {loop type="delivery_delay_undeliverable_date" name="delivery_delay_undeliverable_date"}
+                                <tr>
+                                    <td>{$ID}</td>
+                                    <td><input type="text" value="{$DATE}" readonly class="form-control"/></td>
+                                    <td>
+                                        <input type="checkbox" id="active-{$ID}" {if $ACTIVE == "1"}checked{/if} class="form-control"/>
+                                    </td>
+                                    <td>
+                                        {form type="undeliverabledate.form" name="undeliverabledate.form"}
+                                            <form action="{url path='/admin/module/deliverydelay/undeliverabledate/delete'}" method="post">
+                                                {form_hidden_fields form=$form}
+
+                                                {form_field form=$form field='success_url'}
+                                                    <input type="hidden" name="{$name}" value="{url path='/admin/module/DeliveryDelay'}" />
+                                                {/form_field}
+
+                                                {form_field form=$form field="id"}
+                                                    <input type="hidden" name="{$name}" value="{$ID}"/>
+                                                {/form_field}
+
+                                                <button type="submit" class="btn btn-danger action-btn" title="{intl l='Add new undeliverable date'}" data-toggle="modal">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                            </form>
+                                        {/form}
+                                    </td>
+                                </tr>
+                            {/loop}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {hook name="module.configuration" location="module_configuration"  modulecode="DeliveryDelay"}
+        </div>
+    </div>
+{/block}
+{block name="javascript-initialization"}
+    {javascripts file='assets/js/moment-with-locales.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+    {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+    {include file="delivery-delay/configuration-js.html"}
+{/block}
+
+{block name="javascript-last-call"}
+
+{/block}

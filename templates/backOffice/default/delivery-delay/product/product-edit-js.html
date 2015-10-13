@@ -1,0 +1,41 @@
+{javascripts file='assets/js/moment-with-locales.min.js'}
+  <script src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+  <script src="{$asset_url}"></script>
+{/javascripts}
+
+<script type="text/javascript">
+  $('.js_deliverydelay_product_config').submit(function(event){
+      event.preventDefault();
+      var form = $(this);
+      $('.js_deliverydelay_product_config button[type="submit"]').addClass('disabled').html('{intl l="Please wait..." d="deliverydelay.bo.default"} <span class="glyphicon glyphicon-hourglass"></span>');
+      $.ajax({
+          url: form.attr('action'),
+          type: form.attr('method'),
+          data: form.serialize()
+      }).done(function(data){
+          $(".js_deliverydelay_panel_body").prepend('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data+'</div>');
+          $('.js_deliverydelay_product_config button[type="submit"]').removeClass('disabled').html('{intl l="Save"} <span class="glyphicon glyphicon-ok"></span>');
+      }).fail(function(jqXHR, textStatus ){
+          console.log(jqXHR);
+          console.log(textStatus);
+          $(".js_deliverydelay_panel_body").prepend('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+jqXHR.responseText+'</div>');
+          $('.js_deliverydelay_product_config button[type="submit"]').removeClass('disabled').html('{intl l="Save"} <span class="glyphicon glyphicon-ok"></span>');
+      });
+  });
+
+  {$langcode = {lang attr="code"}|substr:0:2}
+
+  jQuery(function($){
+    $('#date-picker').datetimepicker( {
+      locale: "{$langcode}",
+      viewMode: 'days',
+      format: 'YYYY-MM-DD'
+    });
+
+    $("#span-calendar").click(function(e){
+      $('#date-picker').focus();
+    });
+  });
+</script>

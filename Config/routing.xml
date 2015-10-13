@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <!--
+
+    if a /admin/module/deliverydelay/ route is provided, a "Configuration" button will be displayed
+    for the module in the module list. Clicking this button will invoke this route.
+
+    <route id="my_route_id" path="/admin/module/deliverydelay">
+        <default key="_controller">DeliveryDelay\Full\Class\Name\Of\YourConfigurationController::methodName</default>
+    </route>
+
+    <route id="my_route_id" path="/admin/module/deliverydelay/route-name">
+        <default key="_controller">DeliveryDelay\Full\Class\Name\Of\YourAdminController::methodName</default>
+    </route>
+
+    <route id="my_route_id" path="/my/route/name">
+        <default key="_controller">DeliveryDelay\Full\Class\Name\Of\YourOtherController::methodName</default>
+    </route>
+
+    ...add as many routes as required.
+
+    <route>
+    ...
+    </route>
+    -->
+
+    <route id="delivery_delay_module_config" path="/admin/module/DeliveryDelay">
+        <default key="_controller">DeliveryDelay\Controller\Admin\DeliveryDelayController::viewAction</default>
+    </route>
+
+    <route id="deliverydelay.config" path="/admin/module/deliverydelay/config">
+        <default key="_controller">DeliveryDelay\Controller\Admin\ConfigurationController::setGlobalConfig</default>
+    </route>
+
+    <route id="deliverydelay.product" path="/admin/module/deliverydelay/product/{product_id}">
+        <default key="_controller">DeliveryDelay\Controller\Admin\ConfigurationController::setProductConfig</default>
+        <requirement key="product_id">\d+</requirement>
+    </route>
+
+    <route id="deliverydelay.undeliverabledate.add" path="/admin/module/deliverydelay/undeliverabledate/add">
+        <default key="_controller">DeliveryDelay\Controller\Admin\UndeliverableDateController::addUndeliverableDate</default>
+    </route>
+
+    <route id="deliverydelay.undeliverabledate.delete" path="/admin/module/deliverydelay/undeliverabledate/delete">
+        <default key="_controller">DeliveryDelay\Controller\Admin\UndeliverableDateController::deleteUndeliverableDate</default>
+    </route>
+
+</routes>

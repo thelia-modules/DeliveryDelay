@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <!-- sample definition
+        <loop name="MySuperLoop" class="DeliveryDelay\Loop\MySuperLoop" />
+        -->
+        <loop name="delivery_delay_product" class="DeliveryDelay\Loop\DeliveryDelayProduct" />
+        <loop name="delivery_delay_undeliverable_date" class="DeliveryDelay\Loop\UndeliverableDate" />
+    </loops>
+
+    <forms>
+        <form name="deliverydelay.form" class="DeliveryDelay\Form\DeliveryDelayForm" />
+        <form name="undeliverabledate.form" class="DeliveryDelay\Form\UndeliverableDateForm" />
+    </forms>
+
+    <commands>
+        <!--
+        <command class="DeliveryDelay\Command\MySuperCommand" />
+        -->
+    </commands>
+
+    <!--
+    <services>
+
+    </services>
+    -->
+
+    <hooks>
+        <hook id="deliverydelay.edit.product" class="DeliveryDelay\Hook\Admin\ProductEditHook" scope="request">
+            <tag name="hook.event_listener" event="product.tab-content" type="back" method="onProductTabContent" />
+            <tag name="hook.event_listener" event="product.edit-js" type="back" method="onProductEditJs" />
+        </hook>
+        <hook id="deliverydelay.product" class="DeliveryDelay\Hook\Front\ProductHook" scope="request">
+            <tag name="hook.event_listener" event="product.delivery-delay" type="front" method="onProductDeliveryDelay" />
+            <tag name="hook.event_listener" event="product.details-bottom" type="front" method="onProductDetailsBottom" />
+        </hook>
+    </hooks>
+
+    <!--
+    <exports>
+
+    </exports>
+    -->
+
+    <!--
+    <imports>
+
+    </imports>
+    -->
+</config>

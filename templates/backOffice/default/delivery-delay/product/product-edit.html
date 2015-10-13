@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="{stylesheet file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css'}">
+
+{form type="deliverydelay.form" name="deliverydelay.form"}
+    <form class="js_deliverydelay_product_config" action="{url path='/admin/module/deliverydelay/product/'}{$product_id}" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">{intl l="DeliveryDelay configuration" d='deliverydelay.bo.default'}</h4>
+                {include
+                file      = "includes/inner-form-toolbar.html"
+                hide_flags = true
+                hide_save_and_close_button = true
+                }
+            </div>
+            <div class="panel-body js_deliverydelay_panel_body">
+
+                {form_hidden_fields form=$form}
+
+                {form_field form=$form field='success_url'}
+                    <input type="hidden" name="{$name}" value="{url path={navigate to="current"}}" />
+                {/form_field}
+
+                {form_field form=$form field="delivery_min"}
+                    <div class="col-md-6">
+                        <label for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+
+                        <input type="number"  pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                        <span class="help-block">
+                            {intl l="Used for count the min date if the product have stock (default = 1)" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+
+                {form_field form=$form field="delivery_max"}
+                    <div class="col-md-6">
+                        <label for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+
+                        <input type="number"  pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                        <span class="help-block">
+                            {intl l="Used for count the max date if the product have stock (default = 1)" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+
+                {form_field form=$form field="restock_min"}
+                    <div class="col-md-6">
+                        <label for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+
+                        <input type="number"  pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                        <span class="help-block">
+                            {intl l="Used for count the min date if the product doesn't have stock (default = 1)" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+
+                {form_field form=$form field="restock_max"}
+                    <div class="col-md-6">
+                        <label for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+
+                        <input type="number"  pattern="\d+" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                        <span class="help-block">
+                            {intl l="Used for count the max date if the product doesn't have stock (default = 1)" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+
+                {form_field form=$form field="delivery_type"}
+                    <div class="col-md-6">
+                        <label class="control-label" for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+                        <select class="form-control" name="{$name}" id="{$label_attr.for}">
+                            <option value="normal" {if $value === 'normal'}selected{/if}>{intl l="Normal" d='deliverydelay.bo.default'}</option>
+                            <option value="preorder" {if $value === 'preorder'}selected{/if}>{intl l="Pre-order" d='deliverydelay.bo.default'}</option>
+                            <option value="onorder" {if $value === 'onorder'}selected{/if}>{intl l="On order" d='deliverydelay.bo.default'}</option>
+                        </select>
+                        <span class="help-block">
+                            {intl l="Choose a delivery type you can change display with that for example" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+
+                {form_field form=$form field="delivery_date_start"}
+                    <div class="col-md-6">
+                        <label class="control-label" for="{$label_attr.for}">
+                            {$label} :
+                        </label>
+                        <div class="input-group">
+                            <span id="span-calendar" class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            <input id="date-picker" type="text" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control"/>
+                        </div>
+                        <span class="help-block">
+                            {intl l="If a date is picked the first date of availability will be caluclated from this date, but when the date has passed the date of availability is calculated normally (from the current day)" d='deliverydelay.bo.default'}
+                        </span>
+                    </div>
+                {/form_field}
+            </div>
+        </div>
+    </form>
+{/form}

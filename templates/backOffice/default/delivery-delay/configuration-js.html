@@ -1,0 +1,16 @@
+<script type="text/javascript">
+
+    {$langcode = {lang attr="code"}|substr:0:2}
+
+    jQuery(function($){
+        $('#date-picker').datetimepicker( {
+            locale: "{$langcode}",
+            viewMode: 'days',
+            format: 'MM-DD'
+        });
+
+        $("#span-calendar").click(function(e){
+            $('#date-picker').focus();
+        });
+    });
+</script>

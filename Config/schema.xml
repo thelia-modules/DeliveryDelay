@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia" namespace="DeliveryDelay\Model">
+    <table name="product_delay">
+        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
+        <column name="product_id" type="INTEGER" required="true"/>
+        <column name="delivery_delay_min" type="INTEGER" />
+        <column name="delivery_delay_max" type="INTEGER" />
+        <column name="restock_delay_min" type="INTEGER" />
+        <column name="restock_delay_max" type="INTEGER" />
+        <column name="delivery_date_start" type="VARCHAR" />
+        <column name="delivery_type" type="VARCHAR" />
+        <foreign-key foreignTable="product" name="fk_product_delay_product_id" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference foreign="id" local="product_id" />
+        </foreign-key>
+    </table>
+    <table name="undeliverable_date">
+        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
+        <column name="date" type="VARCHAR" />
+        <column name="active" type="INTEGER" />
+    </table>
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

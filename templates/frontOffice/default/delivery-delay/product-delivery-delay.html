@@ -1,0 +1,9 @@
+<!-- {if $type === 'preorder' }
+  {intl l="This product is on pre-order and will be only available from : " d="deliverydelay.fo.default"}{format_date date={$preOrder} output="date"}
+{elseif $type === 'onorder'}
+  {intl l="This product is only available on order, contact us for more informations" d="deliverydelay.fo.default"}
+{elseif $deliveryMin === $deliveryMax}
+  {intl l="Delivery planned for %date" date={format_date date={$deliveryMin} output="date"} d="deliverydelay.fo.default"}
+{else}
+  {intl l="Delivery planned between %min and %max" min={format_date date={$deliveryMin} output="date"} max={format_date date={$deliveryMax} output="date"} d="deliverydelay.fo.default"}
+{/if} -->
