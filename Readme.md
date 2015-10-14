@@ -14,7 +14,7 @@ This module allows to inform customers of the date of delivery planned for a pro
 Add it in your main thelia composer.json file
 
 ```
-composer require your-vendor/delivery-delay-module:~1.0
+composer require thelia/delivery-delay-module:~1.0
 ```
 
 ## Usage
@@ -44,7 +44,7 @@ And you can also said the product is only available on order and in this case do
 --------
 
 You have different way to show delivery delay.
-The module will automatically show delivery delay on the ```product.details-bottom`` hook.
+The module will automatically show delivery delay on the ```product.details-bottom``` hook.
 But you can deactivate it in back office and use the specific hook ```product.delivery-delay``` to put him where you want.
 Or you can use the loop describe below.
 
@@ -71,12 +71,12 @@ Or you can use the loop describe below.
 
 ### Output arguments
 
-|Variable   |Description |
-|---        |--- |
-|$ON_ORDER    | If the product is on order or not |
-|$PRE_ORDER    | The date from when the product will be available |
-|$DATE_MIN    | The minimum date of delivery |
-|$DATE_MAX    | The maximum date of delivery |
+|Variable                   |Description |
+|---                        |--- |
+|$DELIVERY_TYPE             | The type of delivery (normal, pre-order, on order, ...) |
+|$DELIVERY_START_DATE       | The date from when the product delivery delay calcul start |
+|$DATE_MIN                  | The minimum date of delivery |
+|$DATE_MAX                  | The maximum date of delivery |
 
 ### Exemple
 
