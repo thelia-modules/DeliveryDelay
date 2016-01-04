@@ -11,7 +11,7 @@ return array(
     'DeliveryDelay configuration' => 'Configuration de délais de livraison',
     'Exclude' => 'Exclure',
     'Home' => 'Accueil',
-    'If a date is picked the first date of availability will be calculated from this date, but when the date has passed the date of availability is calculated normally (from the current day)' => 'Si une date est choisie la première date de disponibilité seras calculé à partir de cette date, quand la date est passé la date de disponibilité est calculé normalement (à partir du jour courant)',
+    'If a date is picked the first date of availability will be caluclated from this date, but when the date has passed the date of availability is calculated normally (from the current day)' => 'Si une date est choisie, la première date de disponibilité sera calculée à partir de cette date, quand la date est passée, la date de disponibilité est calculée normalement (à partir du jour courant)',
     'Manage undeliverable date' => 'Gérer les dates non livrables',
     'Modules' => 'Modules',
     'Normal' => 'Normale',
