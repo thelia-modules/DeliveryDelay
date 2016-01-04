@@ -78,6 +78,7 @@ class ProductDelayHandler
             return false;
         }
 
+        // Check if the date is manually excluded
         $undeliverableDates = UndeliverableDateQuery::create()
             ->filterByActive(true)
             ->select("date")
@@ -88,7 +89,13 @@ class ProductDelayHandler
             return false;
         }
 
+        // Check if easter day is excluded
         if (DeliveryDelay::getConfigValue("exclude_easter_day") && true === $this->isEasterDay($date)) {
+            return false;
+        }
+
+        // Check if easter day based holidays are excluded
+        if (DeliveryDelay::getConfigValue("exclude_easter_day_based_holidays") && true === $this->isEasterBasedHoliday($date)) {
             return false;
         }
 
@@ -101,6 +108,34 @@ class ProductDelayHandler
         if ($easterDay === $date) {
             return true;
         }
+        return false;
+    }
+
+    public function isEasterBasedHoliday($date)
+    {
+        if ($date === null) {
+            $date = time();
+        }
+
+        $date = strtotime($date);
+
+        $year = date('Y', $date);
+
+        $easterDate  = easter_date($year);
+        $easterDay   = date('j', $easterDate);
+        $easterMonth = date('n', $easterDate);
+        $easterYear   = date('Y', $easterDate);
+
+        $easterHolidays = [
+            mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
+            mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
+            mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear)
+        ];
+
+        if (in_array($date, $easterHolidays)) {
+            return true;
+        }
+
         return false;
     }
 

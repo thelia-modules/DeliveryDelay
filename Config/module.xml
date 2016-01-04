@@ -5,22 +5,15 @@
     <fullnamespace>DeliveryDelay\DeliveryDelay</fullnamespace>
     <descriptive locale="en_US">
         <title>Show the delivery delay for products</title>
-        <!--
-        <subtitle></subtitle>
-        <description></description>
-        <postscriptum></postscriptum>
-        -->
     </descriptive>
     <descriptive locale="fr_FR">
         <title>Afficher le délai de livraison des produits</title>
     </descriptive>
-    <!-- <logo></logo> -->
-    <!--<images-folder>images</images-folder>-->
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>1.0</version>
+    <version>1.1</version>
     <authors>
         <author>
             <name>Vincent Lopes - Vicente</name>
@@ -28,14 +21,6 @@
         </author>
     </authors>
     <type>classic</type>
-    <!--
-    module dependencies
-    <required>
-        <module version="&gt;=0.1">Front</module>
-        <module version="~1.0">HookCart</module>
-        <module version="&gt;0.2">HookSearch</module>
-    </required>
-    -->
-    <thelia>2.2.0</thelia>
+    <thelia>2.1.0</thelia>
     <stability>other</stability>
 </module>

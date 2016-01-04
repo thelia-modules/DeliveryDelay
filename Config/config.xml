@@ -5,9 +5,6 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <loops>
-        <!-- sample definition
-        <loop name="MySuperLoop" class="DeliveryDelay\Loop\MySuperLoop" />
-        -->
         <loop name="delivery_delay_product" class="DeliveryDelay\Loop\DeliveryDelayProduct" />
         <loop name="delivery_delay_undeliverable_date" class="DeliveryDelay\Loop\UndeliverableDate" />
     </loops>
@@ -17,17 +14,6 @@
         <form name="undeliverabledate.form" class="DeliveryDelay\Form\UndeliverableDateForm" />
     </forms>
 
-    <commands>
-        <!--
-        <command class="DeliveryDelay\Command\MySuperCommand" />
-        -->
-    </commands>
-
-    <!--
-    <services>
-
-    </services>
-    -->
 
     <hooks>
         <hook id="deliverydelay.edit.product" class="DeliveryDelay\Hook\Admin\ProductEditHook" scope="request">
@@ -40,15 +26,4 @@
         </hook>
     </hooks>
 
-    <!--
-    <exports>
-
-    </exports>
-    -->
-
-    <!--
-    <imports>
-
-    </imports>
-    -->
 </config>

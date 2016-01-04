@@ -49,6 +49,32 @@ class UndeliverableDateController extends DeliveryDelayController
             return $response;
         }
 
+        $form = $this->createForm("undeliverabledate.form");
+
+        try {
+            $data = $this->validateForm($form)->getData();
+
+            $undeliverableDate = UndeliverableDateQuery::create()
+                ->findOneById($data["id"]);
+
+            if (null === $undeliverableDate) {
+                throw new \Exception($this->getTranslator()->trans("Undeliverable date id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
+            }
+
+            $undeliverableDate
+                ->setActive($data["active"] ? 1 : 0)
+                ->save();
+
+            return $this->generateSuccessRedirect($form);
+        } catch (\Exception $e) {
+            $this->setupFormErrorContext(
+                $this->getTranslator()->trans("Error updating undeliverable date status : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                $e->getMessage(),
+                $form
+            );
+
+            return self::viewAction();
+        }
     }
 
     public function deleteUndeliverableDate()
