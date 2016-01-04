@@ -6,7 +6,7 @@ return array(
     'Error on delivery delay product configuration : %message' => 'Erreur sur la configuration des délais de livraison du produit : %message',
     'Error on new undeliverable date : %message' => 'Erreur lors de l\'ajout d\'une date non livrable : %message',
     'Error on undeliverable date deletion : %message' => 'Erreur lors de la suppression d\'une date non livrable : %message',
-    'Exclude easter day from delay count' => 'Exclure Pâque du calcul des délais',
+    'Exclude easter day from delay count' => 'Exclure Pâques du calcul des délais',
     'Exclude or not' => 'Exclus ou non',
     'Exclude weekend from delay count' => 'Exclure les week-ends du calcul des délais',
     'Id' => 'Id',
