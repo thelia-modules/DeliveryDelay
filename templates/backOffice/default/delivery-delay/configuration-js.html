@@ -13,4 +13,23 @@
             $('#date-picker').focus();
         });
     });
+
+
+    $(".exclude-date-activation").bootstrapSwitch();
+
+    $(".exclude-date-activation").on("switch-change", function(){
+        var form = $("#update-exclude-date");
+
+        $('body').append('<div class="modal-backdrop fade in" id="loading-event"><div class="loading"></div></div>');
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize()
+        })
+        .done(function(){
+            $("#loading-event").remove();
+        });
+    });
+
 </script>

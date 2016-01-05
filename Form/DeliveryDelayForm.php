@@ -68,6 +68,11 @@ class DeliveryDelayForm extends BaseForm
                 'data'=>DeliveryDelay::getConfigValue("exclude_easter_day"),
                 'label_attr'=>array("for"=>"exclude_easter_day")
             ))
+            ->add("exclude_easter_day_based_holidays", "text", array(
+                'label'=>Translator::getInstance()->trans("Exclude holidays based on easter day date", array(), DeliveryDelay::DOMAIN_NAME),
+                'data'=>DeliveryDelay::getConfigValue("exclude_easter_day_based_holidays"),
+                'label_attr'=>array("for"=>"exclude_easter_day_based_holidays")
+            ))
             ->add("delivery_date_start", "text", array(
                 'label'=>Translator::getInstance()->trans("This product is only available from", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>$data['delivery_date_start'],

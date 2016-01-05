@@ -1,12 +1,10 @@
 <?php
 
-
 namespace DeliveryDelay\Controller\Admin;
 
 use DeliveryDelay\DeliveryDelay;
 use DeliveryDelay\Model\ProductDelayQuery;
 use Thelia\Core\HttpFoundation\JsonResponse;
-use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 
@@ -23,15 +21,23 @@ class ConfigurationController extends DeliveryDelayController
         try {
             $data = $this->validateForm($form)->getData();
 
+            // Configs
             DeliveryDelay::setConfigValue("delivery_min", $data["delivery_min"]);
             DeliveryDelay::setConfigValue("delivery_max", $data["delivery_max"]);
             DeliveryDelay::setConfigValue("restock_min", $data["restock_min"]);
             DeliveryDelay::setConfigValue("restock_max", $data["restock_max"]);
 
+            // Exclude weekend ?
             $excludeWeekend = $data["exclude_weekend"] === "on" ? 1 :0 ;
-            $excludeEasterDay = $data["exclude_easter_day"] === "on" ? 1 :0 ;
             DeliveryDelay::setConfigValue("exclude_weekend", $excludeWeekend);
+
+            // Exclude easter day ?
+            $excludeEasterDay = $data["exclude_easter_day"] === "on" ? 1 :0 ;
             DeliveryDelay::setConfigValue("exclude_easter_day", $excludeEasterDay);
+
+            // Exclude easter day based holidays ?
+            $excludeEasterHolidays = $data["exclude_easter_day_based_holidays"] === "on" ? 1 :0 ;
+            DeliveryDelay::setConfigValue("exclude_easter_day_based_holidays", $excludeEasterHolidays);
 
             return $this->generateSuccessRedirect($form);
 

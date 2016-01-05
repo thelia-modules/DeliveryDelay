@@ -97,32 +97,51 @@
                             {/form_field}
 
                             {form_field form=$form field="exclude_weekend"}
-                            <div class="col-md-6">
-                                <label class=" col-md-6 control-label" for="{$label_attr.for}">
-                                    {$label} :
-                                    <span class="help-block">
-                                        {intl l="Set the weekend days as not livrable"}
-                                    </span>
-                                </label>
-                                <div class="col-md-6">
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="col-md-6 control-label" for="{$label_attr.for}">
+                                                {$label} :
+                                                <span class="help-block">
+                                                    {intl l="Set the weekend days as not livrable"}
+                                                </span>
+                                            </label>
+                                            <div class="col-md-6">
+                                                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
                             {/form_field}
 
                             {form_field form=$form field="exclude_easter_day"}
-                            <div class="col-md-6">
-                                <label class="col-md-6 control-label" for="{$label_attr.for}">
-                                    {$label} :
-                                    <span class="help-block">
-                                        {intl l="Set the easter day as not livrable, the date is calculated dynamically, based on current year"}
-                                    </span>
-                                </label>
                                 <div class="col-md-6">
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                    <label class="col-md-6 control-label" for="{$label_attr.for}">
+                                        {$label} :
+                                        <span class="help-block">
+                                            {intl l="Set the easter day as not livrable, the date is calculated dynamically, based on current year"}
+                                        </span>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                    </div>
                                 </div>
-                            </div>
                             {/form_field}
+
+                            {form_field form=$form field="exclude_easter_day_based_holidays"}
+                                <div class="col-md-6">
+                                    <label class="col-md-6 control-label" for="{$label_attr.for}">
+                                        {$label} :
+                                    <span class="help-block">
+                                        {intl l="Set holidays based on easter day date as not livrable"}
+                                    </span>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value === "1"}checked{/if} class="form-control"/>
+                                    </div>
+                                </div>
+                            {/form_field}
+
                             <div class="col-md-1 col-md-offset-11">
                                 <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Save"}">{intl l="Save"} <span class="glyphicon glyphicon-ok"></span></button>
                             </div>
@@ -139,13 +158,13 @@
                         <tr>
                             <th>Id</th>
                             <th>{intl l="Date"}</th>
-                            <th>{intl l="Exlude"}</th>
+                            <th>{intl l="Exclude"}</th>
                             <th>{intl l="Action"}</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                {form type="undeliverabledate.form" name="undeliverabledate.form"}
+                                {form name="undeliverabledate.form"}
                                     <form action="{url path='/admin/module/deliverydelay/undeliverabledate/add'}" method="post">
                                         {form_hidden_fields form=$form}
 
@@ -184,10 +203,24 @@
                                     <td>{$ID}</td>
                                     <td><input type="text" value="{$DATE}" readonly class="form-control"/></td>
                                     <td>
-                                        <input type="checkbox" id="active-{$ID}" {if $ACTIVE == "1"}checked{/if} class="form-control"/>
+                                        {form name="undeliverabledate.form"}
+                                            <form action="{url path="/admin/module/deliverydelay/undeliverabledate/update"}" method="post" id="update-exclude-date">
+                                                {form_hidden_fields form=$form}
+
+                                                {form_field form=$form field="id"}
+                                                    <input type="hidden" name="{$name}" value="{$ID}">
+                                                {/form_field}
+
+                                                {form_field form=$form field="active"}
+                                                    <div class="switch-small exclude-date-activation" data-id="0" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok-circle'></i>" data-off-label="<i class='glyphicon glyphicon-remove-circle'></i>">
+                                                        <input type="checkbox" name="{$name}" value="true" {if $ACTIVE}checked{/if} />
+                                                    </div>
+                                                {/form_field}
+                                            </form>
+                                        {/form}
                                     </td>
                                     <td>
-                                        {form type="undeliverabledate.form" name="undeliverabledate.form"}
+                                        {form name="undeliverabledate.form"}
                                             <form action="{url path='/admin/module/deliverydelay/undeliverabledate/delete'}" method="post">
                                                 {form_hidden_fields form=$form}
 
@@ -221,6 +254,9 @@
     {/javascripts}
     {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
         <script src="{$asset_url}"></script>
+    {/javascripts}
+    {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+        <script src='{$asset_url}'></script>
     {/javascripts}
     {include file="delivery-delay/configuration-js.html"}
 {/block}
