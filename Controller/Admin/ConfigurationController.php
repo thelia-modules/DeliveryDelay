@@ -3,10 +3,12 @@
 namespace DeliveryDelay\Controller\Admin;
 
 use DeliveryDelay\DeliveryDelay;
+use DeliveryDelay\Form\DeliveryDelayForm;
 use DeliveryDelay\Model\ProductDelayQuery;
-use Thelia\Core\HttpFoundation\JsonResponse;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Template\ParserContext;
+use Thelia\Core\Translation\Translator;
 
 class ConfigurationController extends DeliveryDelayController
 {
@@ -16,7 +18,8 @@ class ConfigurationController extends DeliveryDelayController
             return $response;
         }
 
-        $form = $this->createForm("deliverydelay.form");
+        $form = $this->createForm(DeliveryDelayForm::getName());
+
 
         try {
             $data = $this->validateForm($form)->getData();
@@ -43,7 +46,7 @@ class ConfigurationController extends DeliveryDelayController
 
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on delivery delay configuration : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                Translator::getInstance()->trans("Error on delivery delay configuration : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );
@@ -52,7 +55,7 @@ class ConfigurationController extends DeliveryDelayController
         }
     }
 
-    public function setProductConfig($product_id)
+    public function setProductConfig($product_id, ParserContext $parserContext)
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('DeliveryDelay'), AccessManager::UPDATE)) {
             return $response;
@@ -75,18 +78,24 @@ class ConfigurationController extends DeliveryDelayController
                 ->setDeliveryType($data["delivery_type"])
                 ->save();
 
-            return new JsonResponse($this->getTranslator()->trans("Delivery delay product configuration updated with success!", [], DeliveryDelay::DOMAIN_NAME));
+            return $this->jsonResponse(Translator::getInstance()->trans(
+                "Delivery delay product configuration updated with success!",
+                [],
+                DeliveryDelay::DOMAIN_NAME
+            ));
+
+
         } catch (\Exception $e) {
 
-            $message = $this->getTranslator()->trans("Error on delivery delay product configuration : %message", ["%message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME);
+            $message = Translator::getInstance()->trans("Error on delivery delay product configuration : %message", ["%message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME);
             $form->setErrorMessage($message);
 
-            $this->getParserContext()
+            $parserContext
                 ->addForm($form)
                 ->setGeneralError($message)
             ;
 
-            return new JsonResponse($message, 500);
+            return $this->jsonResponse($message, 500);
         }
     }
 }

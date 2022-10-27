@@ -13,6 +13,7 @@
 namespace DeliveryDelay;
 
 use Propel\Runtime\Connection\ConnectionInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Install\Database;
 use Thelia\Module\BaseModule;
@@ -29,7 +30,7 @@ class DeliveryDelay extends BaseModule
      * Have fun !
      */
 
-    public function postActivation(ConnectionInterface $con = null)
+    public function postActivation(ConnectionInterface $con = null) :void
     {
         if (!self::getConfigValue('is_initialized', false)) {
             $database = new Database($con);
@@ -38,7 +39,15 @@ class DeliveryDelay extends BaseModule
         }
     }
 
-    public function getHooks()
+    public static function configureServices(ServicesConfigurator $servicesConfigurator): void
+    {
+        $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
+            ->exclude([THELIA_MODULE_DIR.ucfirst(self::getModuleCode()).'/I18n/*'])
+            ->autowire(true)
+            ->autoconfigure(true);
+    }
+
+    public function getHooks(): array
     {
         return array(
             array(

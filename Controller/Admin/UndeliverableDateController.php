@@ -4,12 +4,12 @@
 namespace DeliveryDelay\Controller\Admin;
 
 use DeliveryDelay\DeliveryDelay;
-use DeliveryDelay\Model\ProductDelayQuery;
+use DeliveryDelay\Form\UndeliverableDateForm;
 use DeliveryDelay\Model\UndeliverableDate;
 use DeliveryDelay\Model\UndeliverableDateQuery;
-use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Translation\Translator;
 
 class UndeliverableDateController extends DeliveryDelayController
 {
@@ -19,7 +19,7 @@ class UndeliverableDateController extends DeliveryDelayController
             return $response;
         }
 
-        $form = $this->createForm("undeliverabledate.form");
+        $form = $this->createForm(UndeliverableDateForm::getName());
 
         try {
             $data = $this->validateForm($form)->getData();
@@ -34,7 +34,7 @@ class UndeliverableDateController extends DeliveryDelayController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on new undeliverable date : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                Translator::getInstance()->trans("Error on new undeliverable date : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );
@@ -48,8 +48,7 @@ class UndeliverableDateController extends DeliveryDelayController
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('DeliveryDelay'), AccessManager::UPDATE)) {
             return $response;
         }
-
-        $form = $this->createForm("undeliverabledate.form");
+        $form = $this->createForm(UndeliverableDateForm::getName());
 
         try {
             $data = $this->validateForm($form)->getData();
@@ -58,7 +57,7 @@ class UndeliverableDateController extends DeliveryDelayController
                 ->findOneById($data["id"]);
 
             if (null === $undeliverableDate) {
-                throw new \Exception($this->getTranslator()->trans("Undeliverable date id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
+                throw new \Exception(Translator::getInstance()->trans("Undeliverable date id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
             }
 
             $undeliverableDate
@@ -68,7 +67,7 @@ class UndeliverableDateController extends DeliveryDelayController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error updating undeliverable date status : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                Translator::getInstance()->trans("Error updating undeliverable date status : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );
@@ -82,8 +81,8 @@ class UndeliverableDateController extends DeliveryDelayController
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('DeliveryDelay'), AccessManager::UPDATE)) {
             return $response;
         }
+        $form = $this->createForm(UndeliverableDateForm::getName());
 
-        $form = $this->createForm("undeliverabledate.form");
 
         try {
             $data = $this->validateForm($form)->getData();
@@ -92,7 +91,10 @@ class UndeliverableDateController extends DeliveryDelayController
                 ->findOneById($data["id"]);
 
             if (null === $undeliverableDate) {
-                throw new \Exception($this->getTranslator()->trans("Undeliverable date id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
+                throw new \Exception(Translator::getInstance()->trans(
+                    "Undeliverable date id doesn't exist"),
+                    array(),
+                    DeliveryDelay::DOMAIN_NAME);
             }
 
             $undeliverableDate->delete();
@@ -100,7 +102,10 @@ class UndeliverableDateController extends DeliveryDelayController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on undeliverable date deletion : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                Translator::getInstance()->trans(
+                    "Error on undeliverable date deletion : %message",
+                    ["message"=>$e->getMessage()],
+                    DeliveryDelay::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );

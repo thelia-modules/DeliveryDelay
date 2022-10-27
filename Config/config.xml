@@ -16,14 +16,15 @@
 
 
     <hooks>
-        <hook id="deliverydelay.edit.product" class="DeliveryDelay\Hook\Admin\ProductEditHook" scope="request">
+        <hook id="deliverydelay.edit.product" class="DeliveryDelay\Hook\Admin\ProductEditHook">
             <tag name="hook.event_listener" event="product.tab-content" type="back" method="onProductTabContent" />
             <tag name="hook.event_listener" event="product.edit-js" type="back" method="onProductEditJs" />
         </hook>
-        <hook id="deliverydelay.product" class="DeliveryDelay\Hook\Front\ProductHook" scope="request">
+        <hook id="deliverydelay.product" class="DeliveryDelay\Hook\Front\ProductHook">
             <tag name="hook.event_listener" event="product.delivery-delay" type="front" method="onProductDeliveryDelay" />
             <tag name="hook.event_listener" event="product.details-bottom" type="front" method="onProductDetailsBottom" />
         </hook>
     </hooks>
+
 
 </config>
