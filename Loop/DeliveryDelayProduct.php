@@ -13,7 +13,7 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 
 class DeliveryDelayProduct extends BaseLoop implements ArraySearchLoopInterface
 {
-    protected function getArgDefinitions()
+    protected function getArgDefinitions(): ArgumentCollection
     {
         return new ArgumentCollection(
             Argument::createIntTypeArgument("product_id")
@@ -21,7 +21,7 @@ class DeliveryDelayProduct extends BaseLoop implements ArraySearchLoopInterface
     }
 
         
-    public function buildArray()
+    public function buildArray(): array
     {
         $productId = $this->getProductId();
 
@@ -36,7 +36,7 @@ class DeliveryDelayProduct extends BaseLoop implements ArraySearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
+    public function parseResults(LoopResult $loopResult): LoopResult
     {
         foreach ($loopResult->getResultDataCollection() as $delivery) {
             $loopResultRow = new LoopResultRow();

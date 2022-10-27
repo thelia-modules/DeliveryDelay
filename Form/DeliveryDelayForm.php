@@ -5,6 +5,7 @@ namespace DeliveryDelay\Form;
 
 use DeliveryDelay\DeliveryDelay;
 use DeliveryDelay\Model\ProductDelayQuery;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints;
@@ -38,47 +39,47 @@ class DeliveryDelayForm extends BaseForm
         }
 
         $this->formBuilder
-            ->add("delivery_min", "text", array(
+            ->add("delivery_min", TextType::class, array(
                 'data'=>$data["delivery_min"],
                 'label'=>Translator::getInstance()->trans("Minimum delivery delay (days)", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"delivery_min")
             ))
-            ->add("delivery_max", "text", array(
+            ->add("delivery_max", TextType::class, array(
                 'data'=>$data["delivery_max"],
                 'label'=>Translator::getInstance()->trans("Maximum delivery delay (days)", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"delivery_max")
             ))
-            ->add("restock_min", "text", array(
+            ->add("restock_min", TextType::class, array(
                 'data'=>$data["restock_min"],
                 'label'=>Translator::getInstance()->trans("Minimum restock delay (days)", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"restock_min")
             ))
-            ->add("restock_max", "text", array(
+            ->add("restock_max", TextType::class, array(
                 'data'=>$data["restock_max"],
                 'label'=>Translator::getInstance()->trans("Maximum restock delay (days)", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"restock_max")
             ))
-            ->add("exclude_weekend", "text", array(
+            ->add("exclude_weekend", TextType::class, array(
                 'label'=>Translator::getInstance()->trans("Exclude weekend from delay count", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>DeliveryDelay::getConfigValue("exclude_weekend"),
                 'label_attr'=>array("for"=>"exclude_weekend")
             ))
-            ->add("exclude_easter_day", "text", array(
+            ->add("exclude_easter_day", TextType::class, array(
                 'label'=>Translator::getInstance()->trans("Exclude easter day from delay count", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>DeliveryDelay::getConfigValue("exclude_easter_day"),
                 'label_attr'=>array("for"=>"exclude_easter_day")
             ))
-            ->add("exclude_easter_day_based_holidays", "text", array(
+            ->add("exclude_easter_day_based_holidays", TextType::class, array(
                 'label'=>Translator::getInstance()->trans("Exclude holidays based on easter day date", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>DeliveryDelay::getConfigValue("exclude_easter_day_based_holidays"),
                 'label_attr'=>array("for"=>"exclude_easter_day_based_holidays")
             ))
-            ->add("delivery_date_start", "text", array(
+            ->add("delivery_date_start", TextType::class, array(
                 'label'=>Translator::getInstance()->trans("This product is only available from", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>$data['delivery_date_start'],
                 'label_attr'=>array("for"=>"delivery_date_start")
             ))
-            ->add("delivery_type", "text", array(
+            ->add("delivery_type", TextType::class, array(
                 'label'=>Translator::getInstance()->trans("Type of delivery", array(), DeliveryDelay::DOMAIN_NAME),
                 'data'=>$data["delivery_type"],
                 'label_attr'=>array("for"=>"delivery_type")
@@ -86,7 +87,7 @@ class DeliveryDelayForm extends BaseForm
         ;
     }
     
-    public function getName()
+    public static function getName()
     {
         return "deliverydelayform";
     }

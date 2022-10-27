@@ -13,7 +13,7 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 
 class UndeliverableDate extends BaseLoop implements PropelSearchLoopInterface
 {
-    protected function getArgDefinitions()
+    protected function getArgDefinitions(): ArgumentCollection
     {
         return new ArgumentCollection();
     }
@@ -30,7 +30,7 @@ class UndeliverableDate extends BaseLoop implements PropelSearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
+    public function parseResults(LoopResult $loopResult): LoopResult
     {
         /** @var UndeliverableDateModel $undeliverableDate */
         foreach ($loopResult->getResultDataCollection() as $undeliverableDate) {

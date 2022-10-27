@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database defaultIdMethod="native" name="thelia" namespace="DeliveryDelay\Model">
+<database defaultIdMethod="native" name="TheliaMain" namespace="DeliveryDelay\Model">
     <table name="product_delay">
         <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
         <column name="product_id" type="INTEGER" required="true"/>
