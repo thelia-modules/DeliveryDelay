@@ -1,0 +1,66 @@
+{# DeliveryDelay: configuration page (hook module.configuration) #}
+{% form_theme form with bo_form_themes only %}
+
+<div class="card mb-4" data-testid="delivery-delay-config">
+    <div class="card-header">
+        <h3 class="card-title mb-0">{{ 'Delays per carrier'|trans({}, 'deliverydelay.bo.default') }}</h3>
+    </div>
+    {{ form_start(form, {action: path('deliverydelay.config.save'), method: 'POST', attr: {'data-testid': 'delivery-delay-config-form'}}) }}
+    <div class="card-body">
+        <p class="text-muted">
+            {{ 'An estimate is computed for each carrier that has a transit time. Leave a row empty to give a carrier no estimate. Days are working days of the carrier: closed days of the week and closures are managed in the delivery calendar.'|trans({}, 'deliverydelay.bo.default') }}
+        </p>
+        <p>
+            <a href="{{ closures_url }}" class="btn btn-sm btn-outline-secondary" data-testid="delivery-delay-calendar-link">
+                {{ 'Delivery calendar and closures'|trans({}, 'deliverydelay.bo.default') }}
+            </a>
+        </p>
+
+        {{ form_errors(form) }}
+
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>{{ 'Carrier'|trans({}, 'deliverydelay.bo.default') }}</th>
+                        <th>{{ 'Preparation (days)'|trans({}, 'deliverydelay.bo.default') }}</th>
+                        <th>{{ 'Transit minimum (days)'|trans({}, 'deliverydelay.bo.default') }}</th>
+                        <th>{{ 'Transit maximum (days)'|trans({}, 'deliverydelay.bo.default') }}</th>
+                        <th>{{ 'Cut-off time'|trans({}, 'deliverydelay.bo.default') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in form.carriers %}
+                        <tr data-testid="delivery-delay-carrier-row">
+                            <td>
+                                {{ form_widget(row.moduleId) }}
+                                {{ titles[row.vars.value.moduleId]|default('#' ~ row.vars.value.moduleId) }}
+                            </td>
+                            <td>{{ form_widget(row.preparationDays, {attr: {class: 'form-control', style: 'max-width: 8rem'}}) }}</td>
+                            <td>{{ form_widget(row.transitMinDays, {attr: {class: 'form-control', style: 'max-width: 8rem'}}) }}</td>
+                            <td>{{ form_widget(row.transitMaxDays, {attr: {class: 'form-control', style: 'max-width: 8rem'}}) }}</td>
+                            <td>{{ form_widget(row.cutoffTime, {attr: {class: 'form-control', style: 'max-width: 8rem'}}) }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-muted">{{ 'No delivery module is active.'|trans({}, 'deliverydelay.bo.default') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% do form.carriers.setRendered %}
+
+        <div class="mb-3">
+            {{ form_label(form.productPageModuleId, 'Carrier shown on the product page'|trans({}, 'deliverydelay.bo.default'), {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.productPageModuleId, {attr: {class: 'form-select', style: 'max-width: 24rem'}}) }}
+            <div class="form-text">{{ 'The estimate on the product page is given for the country of the shop.'|trans({}, 'deliverydelay.bo.default') }}</div>
+        </div>
+    </div>
+    {% if can_update %}
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary" data-testid="delivery-delay-config-save">{{ 'Save'|trans }}</button>
+        </div>
+    {% endif %}
+    {{ form_end(form) }}
+</div>
