@@ -4,16 +4,18 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>DeliveryDelay\DeliveryDelay</fullnamespace>
     <descriptive locale="en_US">
-        <title>Show the delivery delay for products</title>
+        <title>Delivery delays</title>
+        <description>Tells customers when their parcel arrives: an interval of dates per carrier, computed from the preparation time, the transit time, the cut-off time and the delivery calendar of the shop. Shown with each delivery option, on the product page and in the order confirmation e-mail.</description>
     </descriptive>
     <descriptive locale="fr_FR">
-        <title>Afficher le délai de livraison des produits</title>
+        <title>Délais de livraison</title>
+        <description>Indique aux clients quand leur colis arrive : un intervalle de dates par transporteur, calculé d'après le délai de préparation, le délai d'acheminement, l'heure limite de commande et le calendrier de livraison de la boutique. Affiché avec chaque option de livraison, sur la fiche produit et dans l'e-mail de confirmation de commande.</description>
     </descriptive>
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <authors>
         <author>
             <name>Vincent Lopes - Vicente</name>
@@ -21,6 +23,6 @@
         </author>
     </authors>
     <type>classic</type>
-    <thelia>2.5.0</thelia>
+    <thelia>3.3.0</thelia>
     <stability>other</stability>
 </module>
