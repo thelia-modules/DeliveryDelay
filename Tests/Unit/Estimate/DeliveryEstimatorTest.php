@@ -209,9 +209,9 @@ final class DeliveryEstimatorTest extends TestCase
     }
 
     /**
-     * @return array{0: string, 1: string}|null
+     * @return array{0: string, 1: string}
      */
-    private function days(?DeliveryInterval $interval): ?array
+    private function days(?DeliveryInterval $interval): array
     {
         self::assertNotNull($interval, 'An estimate was expected.');
 

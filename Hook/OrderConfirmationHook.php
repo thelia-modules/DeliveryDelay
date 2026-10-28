@@ -16,7 +16,7 @@ namespace DeliveryDelay\Hook;
 
 use DeliveryDelay\Repository\OrderEstimateRepository;
 use DeliveryDelay\Service\EstimateSentence;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Core\Template\Parser\ParserResolver;
@@ -44,6 +44,9 @@ class OrderConfirmationHook extends BaseHook
         parent::__construct($dispatcher, $parserResolver);
     }
 
+    /**
+     * @return array<string, list<array{type: string, method: string}>>
+     */
     public static function getSubscribedHooks(): array
     {
         return [

@@ -39,8 +39,8 @@ final readonly class DeliveryEstimator
     }
 
     /**
-     * @param int $productDays the days the slowest product of the order adds to the preparation
-     * @param \DateTimeImmutable $now in the time zone of the shop
+     * @param int                $productDays the days the slowest product of the order adds to the preparation
+     * @param \DateTimeImmutable $now         in the time zone of the shop
      */
     public function estimate(CarrierDelays $delays, int $productDays, \DateTimeImmutable $now): ?DeliveryInterval
     {

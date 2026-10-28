@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace DeliveryDelay\EventListeners;
 
-use DeliveryDelay\Service\CartLines;
 use DeliveryDelay\Service\CarrierEstimates;
+use DeliveryDelay\Service\CartLines;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Api\Bridge\Propel\Event\DeliveryModuleOptionEvent;
 use Thelia\Core\Event\TheliaEvents;

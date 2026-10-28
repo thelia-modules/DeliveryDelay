@@ -17,6 +17,7 @@ namespace DeliveryDelay\Controller;
 use DeliveryDelay\Form\Data\ProductDelaysInput;
 use DeliveryDelay\Form\ProductDelaysType;
 use DeliveryDelay\Repository\ProductDelayRepository;
+use DeliveryDelay\Service\BackOffice\Flash;
 use DeliveryDelay\Service\CarrierEstimates;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,6 +44,7 @@ class ProductDelayController extends BaseAdminController
         FormFactoryInterface $formFactory,
         ProductDelayRepository $delays,
         CarrierEstimates $estimates,
+        Flash $flash,
         #[Autowire(service: 'translator')]
         TranslatorInterface $messages,
     ): Response {
@@ -56,18 +58,17 @@ class ProductDelayController extends BaseAdminController
 
         $form = $formFactory->create(ProductDelaysType::class, new ProductDelaysInput());
         $form->handleRequest($request);
-        $flashes = $request->getSession()->getFlashBag();
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             foreach ($form->getErrors(true) as $error) {
-                $flashes->add(ConfigurationController::FLASH_ERROR, $messages->trans($error->getMessage(), [], 'deliverydelay.bo.default'));
+                $flash->add($request, Flash::ERROR, $messages->trans($error->getMessage(), [], 'deliverydelay.bo.default'));
             }
         } else {
             /** @var ProductDelaysInput $input */
             $input = $form->getData();
             $delays->save($productId, $input->availabilityDays, $input->restockDays);
             $estimates->reset();
-            $flashes->add(ConfigurationController::FLASH_SUCCESS, $messages->trans('The delays are saved.', [], 'deliverydelay.bo.default'));
+            $flash->add($request, Flash::SUCCESS, $messages->trans('The delays are saved.', [], 'deliverydelay.bo.default'));
         }
 
         return new RedirectResponse(URL::getInstance()->absoluteUrl('/admin/products/update', [

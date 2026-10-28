@@ -21,9 +21,9 @@ use DeliveryDelay\Form\ProductDelaysType;
 use DeliveryDelay\Repository\ProductDelayRepository;
 use DeliveryDelay\Service\BackOffice\ConfigurationScreen;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Thelia\Core\Event\Hook\HookRenderBlockEvent;
 use Thelia\Core\Event\Hook\HookRenderEvent;
@@ -56,6 +56,9 @@ class BackOfficeHook extends BaseHook
         parent::__construct($dispatcher, $parserResolver);
     }
 
+    /**
+     * @return array<string, list<array{type: string, method: string}>>
+     */
     public static function getSubscribedHooks(): array
     {
         return [
@@ -108,7 +111,7 @@ class BackOfficeHook extends BaseHook
                 'form' => $this->formFactory->create(ProductDelaysType::class, $input)->createView(),
                 'product_id' => $productId,
                 'can_update' => $this->granted(AccessManager::UPDATE),
-                ]),
+            ]),
         ]);
     }
 

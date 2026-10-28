@@ -62,6 +62,8 @@ class DeliveryDelay extends BaseModule
      * TYPE_BEFORE_REMOVING is what makes the second pass safe: autowiring has already run, so a
      * definition the container cannot build carries its error and is removed instead of being
      * forced into the compiled container.
+     *
+     * @return list<array{0: object, 1: string}>
      */
     public static function getCompilers(): array
     {

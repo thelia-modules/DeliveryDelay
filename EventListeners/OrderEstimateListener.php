@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace DeliveryDelay\EventListeners;
 
 use DeliveryDelay\Repository\OrderEstimateRepository;
-use DeliveryDelay\Service\CartLines;
 use DeliveryDelay\Service\CarrierEstimates;
+use DeliveryDelay\Service\CartLines;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\CartQuery;

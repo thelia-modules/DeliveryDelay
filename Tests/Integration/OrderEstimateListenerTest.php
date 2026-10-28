@@ -20,13 +20,7 @@ use DeliveryDelay\Repository\OrderEstimateRepository;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\Payment\ManageStockOnCreationEvent;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\Domain\Order\OrderFacade;
-use Thelia\Model\Cart;
-use Thelia\Model\CartItem;
-use Thelia\Model\ModuleQuery;
 use Thelia\Model\Order;
-use Thelia\Model\OrderStatusQuery;
-use Thelia\Model\Product;
 use Thelia\Model\ProductSaleElementsQuery;
 
 final class OrderEstimateListenerTest extends DeliveryDelayTestCase

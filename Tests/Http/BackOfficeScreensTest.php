@@ -159,7 +159,7 @@ final class BackOfficeScreensTest extends WebIntegrationTestCase
         $this->loginAs($this->factory()->admin());
 
         $form = $this->configurationForm();
-        $form['configuration[productPageModuleId]']->select((string) $this->carrierId);
+        $form['configuration[productPageModuleId]']->setValue((string) $this->carrierId);
         $this->client->submit($form);
 
         self::assertSame((string) $this->carrierId, \Thelia\Model\ConfigQuery::read(\DeliveryDelay\DeliveryDelay::CONFIG_PRODUCT_PAGE_MODULE));

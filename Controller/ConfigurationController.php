@@ -16,6 +16,7 @@ namespace DeliveryDelay\Controller;
 
 use DeliveryDelay\Form\ConfigurationType;
 use DeliveryDelay\Service\BackOffice\ConfigurationScreen;
+use DeliveryDelay\Service\BackOffice\Flash;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -33,9 +34,6 @@ use Thelia\Tools\URL;
 #[Route('/admin/modules/DeliveryDelay', name: 'deliverydelay.config')]
 class ConfigurationController extends BaseAdminController
 {
-    /** The types the back-office layout prints at the top of every page. */
-    public const FLASH_SUCCESS = 'success';
-    public const FLASH_ERROR = 'error';
     public const SCREEN_URL = '/admin/module/DeliveryDelay';
 
     #[Route('/save', name: '.save', methods: ['POST'])]
@@ -43,6 +41,7 @@ class ConfigurationController extends BaseAdminController
         Request $request,
         FormFactoryInterface $formFactory,
         ConfigurationScreen $screen,
+        Flash $flash,
         #[Autowire(service: 'translator')]
         TranslatorInterface $messages,
     ): Response {
@@ -56,15 +55,13 @@ class ConfigurationController extends BaseAdminController
         ]);
         $form->handleRequest($request);
 
-        $session = $request->getSession();
-
         if (!$form->isSubmitted() || !$form->isValid()) {
             foreach ($this->errorsOf($form, $titles, $messages) as $error) {
-                $session->getFlashBag()->add(self::FLASH_ERROR, $error);
+                $flash->add($request, Flash::ERROR, $error);
             }
         } else {
             $screen->save($form->getData(), array_keys($titles));
-            $session->getFlashBag()->add(self::FLASH_SUCCESS, $messages->trans('The delays are saved.', [], 'deliverydelay.bo.default'));
+            $flash->add($request, Flash::SUCCESS, $messages->trans('The delays are saved.', [], 'deliverydelay.bo.default'));
         }
 
         return new RedirectResponse(URL::getInstance()->absoluteUrl(self::SCREEN_URL));
@@ -84,7 +81,7 @@ class ConfigurationController extends BaseAdminController
         foreach ($form->get('carriers') as $index => $row) {
             foreach ($row->getErrors(true) as $error) {
                 \assert($error instanceof FormError);
-                $errors[] = ($titles[$moduleIds[$index] ?? 0] ?? '#'.$index).' : '.$messages->trans($error->getMessage(), [], $domain);
+                $errors[] = ($titles[$moduleIds[(int) $index] ?? 0] ?? '#'.$index).' : '.$messages->trans($error->getMessage(), [], $domain);
             }
         }
 

@@ -24,7 +24,7 @@ final class FakeClosedDays implements ClosedDaysProvider
     public int $calls = 0;
 
     /**
-     * @param list<string> $closedDays  Y-m-d
+     * @param list<string> $closedDays    Y-m-d
      * @param bool         $closeEveryDay every day of the calendar is closed
      */
     public function __construct(
