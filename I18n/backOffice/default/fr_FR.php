@@ -1,29 +1,41 @@
 <?php
 
-return array(
-    'Action' => 'Action',
-    'Add new undeliverable date' => 'Ajouter une date non livrable',
-    'Choose a delivery type you can change display with that for example' => 'Choisissez un type de livraison, qui pourra permettre un affichage différent par exemple',
-    'Click to pick a date' => 'Cliquez pour sélectionner une date',
-    'Configuration for DeliveryDelay' => 'Configuration de DeliveryDelay',
-    'Date' => 'Date',
-    'Delivery delay' => 'Delivery Delay',
-    'DeliveryDelay configuration' => 'Configuration de délais de livraison',
-    'Exclude' => 'Exclure',
-    'Home' => 'Accueil',
-    'If a date is picked the first date of availability will be caluclated from this date, but when the date has passed the date of availability is calculated normally (from the current day)' => 'Si une date est choisie, la première date de disponibilité sera calculée à partir de cette date, quand la date est passée, la date de disponibilité est calculée normalement (à partir du jour courant)',
-    'Manage undeliverable date' => 'Gérer les dates non livrables',
-    'Modules' => 'Modules',
-    'Normal' => 'Normale',
-    'On order' => 'Sur Commande',
-    'Please wait...' => 'Veuillez patienter...',
-    'Pre-order' => 'Précommande',
-    'Save' => 'Enregistrer',
-    'Set holidays based on easter day date as not livrable' => 'Définir les jours fériés basés sur la date de Pâques (Ascension, Pentecôte) comme non livrables',
-    'Set the easter day as not livrable, the date is calculated dynamically, based on current year' => 'Définir le jour de Pâques comme non livrable, la date est calculé dynamiquement en fonction de l\'année courante',
-    'Set the weekend days as not livrable' => 'Définir le week-end comme non-livrable',
-    'Used for count the max date if the product doesn\'t have stock (default = 1)' => 'Utilisé pour le calcul de la date maximum si le produit n\'est pas en stock (défaut = 1)',
-    'Used for count the max date if the product have stock (default = 1)' => 'Utilisé pour le calcul de la date maximum si le produit est en stock (défaut = 1)',
-    'Used for count the min date if the product doesn\'t have stock (default = 1)' => 'Utilisé pour le calcul de la date minimum si le produit n\'est pas en stock (défaut = 1)',
-    'Used for count the min date if the product have stock (default = 1)' => 'Utilisé pour le calcul de la date minimum si le produit est en stock (défaut = 1)',
-);
+declare(strict_types=1);
+
+/*
+ * This file is part of the Thelia package.
+ * http://www.thelia.net
+ *
+ * (c) OpenStudio <info@thelia.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+return [
+    'The delays are saved.' => 'Les délais sont enregistrés.',
+    'The delays could not be saved.' => 'Les délais n\'ont pas pu être enregistrés.',
+    'This product does not exist.' => 'Ce produit n\'existe pas.',
+    'The delays are whole numbers of days, zero or more.' => 'Les délais sont des nombres entiers de jours, zéro ou plus.',
+    'Both transit times are required when a carrier has delays.' => 'Les deux délais d\'acheminement sont obligatoires dès qu\'un transporteur a des délais.',
+    'The minimum transit time must not exceed the maximum.' => 'Le délai d\'acheminement minimum ne peut pas dépasser le maximum.',
+    'The cut-off time is written HH:MM.' => 'L\'heure limite s\'écrit HH:MM.',
+    'The first carrier that has delays' => 'Le premier transporteur qui a des délais',
+    'Delivery delay' => 'Délai de livraison',
+    'Delays per carrier' => 'Délais par transporteur',
+    'An estimate is computed for each carrier that has a transit time. Leave a row empty to give a carrier no estimate. Days are working days of the carrier: closed days of the week and closures are managed in the delivery calendar.' => 'Une estimation est calculée pour chaque transporteur qui a un délai d\'acheminement. Laissez une ligne vide pour qu\'un transporteur n\'ait pas d\'estimation. Les jours comptés sont les jours ouverts du transporteur : les jours de la semaine fermés et les fermetures se règlent dans le calendrier de livraison.',
+    'Delivery calendar and closures' => 'Calendrier de livraison et fermetures',
+    'Carrier' => 'Transporteur',
+    'Preparation (days)' => 'Préparation (jours)',
+    'Transit minimum (days)' => 'Acheminement minimum (jours)',
+    'Transit maximum (days)' => 'Acheminement maximum (jours)',
+    'Cut-off time' => 'Heure limite',
+    'No delivery module is active.' => 'Aucun module de livraison n\'est actif.',
+    'Carrier shown on the product page' => 'Transporteur affiché sur la fiche produit',
+    'The estimate on the product page is given for the country of the shop.' => 'L\'estimation de la fiche produit est donnée pour le pays de la boutique.',
+    'Days added to the preparation of an order that contains this product. The slowest product of the cart sets the pace. Leave a field empty when the product needs no extra delay.' => 'Jours ajoutés à la préparation d\'une commande qui contient ce produit. Le produit le plus lent du panier donne le rythme. Laissez un champ vide quand le produit n\'a pas de délai supplémentaire.',
+    'Availability delay (days)' => 'Délai de disponibilité (jours)',
+    'Always added, for a product made to order.' => 'Toujours ajouté, pour un produit fabriqué à la commande.',
+    'Restock delay (days)' => 'Délai de réapprovisionnement (jours)',
+    'Added on top when the variant ordered is out of stock.' => 'Ajouté en plus quand la déclinaison commandée est en rupture.',
+];

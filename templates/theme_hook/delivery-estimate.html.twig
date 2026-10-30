@@ -1,0 +1,8 @@
+{# Only classes the Flexy sheet already carries: its Tailwind does not scan modules. #}
+<p class="DeliveryEstimate paragraph-3 text-grey-dark mt-4" data-testid="delivery-estimate">
+    {% if single_day %}
+        {{ 'Estimated delivery (%country%): %date%'|trans({'%country%': country, '%date%': earliest}, 'deliverydelay.fo.default') }}
+    {% else %}
+        {{ 'Estimated delivery (%country%): between %earliest% and %latest%'|trans({'%country%': country, '%earliest%': earliest, '%latest%': latest}, 'deliverydelay.fo.default') }}
+    {% endif %}
+</p>

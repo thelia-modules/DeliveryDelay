@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Thelia package.
+ * http://www.thelia.net
+ *
+ * (c) OpenStudio <info@thelia.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace DeliveryDelay\Model;
 
-use DeliveryDelay\DeliveryDelay;
 use DeliveryDelay\Model\Base\ProductDelay as BaseProductDelay;
 
 class ProductDelay extends BaseProductDelay
 {
-
-    public function getDefaultValue()
-    {
-        $this->setDeliveryDelayMin(DeliveryDelay::getConfigValue("delivery_min", 1))
-            ->setDeliveryDelayMax(DeliveryDelay::getConfigValue("delivery_min", 1))
-            ->setRestockDelayMin(DeliveryDelay::getConfigValue("restock_min", 1))
-            ->setRestockDelayMax(DeliveryDelay::getConfigValue("restock_max", 1))
-            ->setDeliveryDateStart(null)
-            ->setDeliveryType(null);
-        return $this;
-    }
 }

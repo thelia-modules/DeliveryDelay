@@ -1,0 +1,28 @@
+{# DeliveryDelay: tab of the product sheet (hook product.tab) #}
+{% form_theme form with bo_form_themes only %}
+
+<div class="card mb-3" data-testid="delivery-delay-product">
+    {{ form_start(form, {action: path('deliverydelay.product.save', {productId: product_id}), method: 'POST', attr: {'data-testid': 'delivery-delay-product-form'}}) }}
+    <div class="card-body">
+        <p class="text-muted">
+            {{ 'Days added to the preparation of an order that contains this product. The slowest product of the cart sets the pace. Leave a field empty when the product needs no extra delay.'|trans({}, 'deliverydelay.bo.default') }}
+        </p>
+        {{ form_errors(form) }}
+        <div class="mb-3">
+            {{ form_label(form.availabilityDays, 'Availability delay (days)'|trans({}, 'deliverydelay.bo.default'), {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.availabilityDays, {attr: {class: 'form-control', style: 'max-width: 10rem'}}) }}
+            <div class="form-text">{{ 'Always added, for a product made to order.'|trans({}, 'deliverydelay.bo.default') }}</div>
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.restockDays, 'Restock delay (days)'|trans({}, 'deliverydelay.bo.default'), {label_attr: {class: 'form-label'}}) }}
+            {{ form_widget(form.restockDays, {attr: {class: 'form-control', style: 'max-width: 10rem'}}) }}
+            <div class="form-text">{{ 'Added on top when the variant ordered is out of stock.'|trans({}, 'deliverydelay.bo.default') }}</div>
+        </div>
+    </div>
+    {% if can_update %}
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary" data-testid="delivery-delay-product-save">{{ 'Save'|trans }}</button>
+        </div>
+    {% endif %}
+    {{ form_end(form) }}
+</div>

@@ -1,22 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database defaultIdMethod="native" name="TheliaMain" namespace="DeliveryDelay\Model">
-    <table name="product_delay">
-        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
-        <column name="product_id" type="INTEGER" required="true"/>
-        <column name="delivery_delay_min" type="INTEGER" />
-        <column name="delivery_delay_max" type="INTEGER" />
-        <column name="restock_delay_min" type="INTEGER" />
-        <column name="restock_delay_max" type="INTEGER" />
-        <column name="delivery_date_start" type="VARCHAR" />
-        <column name="delivery_type" type="VARCHAR" />
-        <foreign-key foreignTable="product" name="fk_product_delay_product_id" onDelete="CASCADE" onUpdate="CASCADE">
+
+    <!-- The delays of one delivery module. No row: the module gets no estimate. -->
+    <table name="delivery_delay_carrier" phpName="CarrierDelay">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="module_id" required="true" type="INTEGER" />
+        <column name="preparation_days" required="true" type="INTEGER" defaultValue="0" />
+        <column name="transit_min_days" required="true" type="INTEGER" defaultValue="0" />
+        <column name="transit_max_days" required="true" type="INTEGER" defaultValue="0" />
+        <column name="cutoff_time" type="TIME" />
+        <behavior name="timestampable" />
+        <foreign-key foreignTable="module" name="fk_delivery_delay_carrier_module_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="module_id" />
+        </foreign-key>
+        <unique name="uniq_delivery_delay_carrier_module_id">
+            <unique-column name="module_id" />
+        </unique>
+    </table>
+
+    <!-- NULL is "not filled in", 0 is a value. -->
+    <table name="delivery_delay_product" phpName="ProductDelay">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="product_id" required="true" type="INTEGER" />
+        <column name="availability_days" type="INTEGER" />
+        <column name="restock_days" type="INTEGER" />
+        <behavior name="timestampable" />
+        <foreign-key foreignTable="product" name="fk_delivery_delay_product_product_id" onDelete="CASCADE" onUpdate="RESTRICT">
             <reference foreign="id" local="product_id" />
         </foreign-key>
+        <unique name="uniq_delivery_delay_product_product_id">
+            <unique-column name="product_id" />
+        </unique>
     </table>
-    <table name="undeliverable_date">
-        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
-        <column name="date" type="VARCHAR" />
-        <column name="active" type="INTEGER" />
+
+    <!-- The interval the customer was told when the order was placed. module_id has no foreign
+         key: the estimate outlives the carrier it was computed for. -->
+    <table name="delivery_delay_order_estimate" phpName="OrderEstimate">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="order_id" required="true" type="INTEGER" />
+        <column name="module_id" type="INTEGER" />
+        <column name="earliest_date" required="true" type="DATE" />
+        <column name="latest_date" required="true" type="DATE" />
+        <behavior name="timestampable">
+            <parameter name="disable_updated_at" value="true" />
+        </behavior>
+        <foreign-key foreignTable="order" name="fk_delivery_delay_order_estimate_order_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="order_id" />
+        </foreign-key>
+        <unique name="uniq_delivery_delay_order_estimate_order_id">
+            <unique-column name="order_id" />
+        </unique>
     </table>
+
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

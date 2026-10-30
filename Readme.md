@@ -1,93 +1,81 @@
 # Delivery Delay
 
-This module allows to inform customers of the date of delivery planned for a product.
+Tells customers when their parcel arrives, as an interval of dates, computed per carrier.
+
+The interval is shown:
+
+- with each delivery option of the checkout (`minimumDeliveryDate` and `maximumDeliveryDate` of the `/api/front/delivery_modules` options, which the Flexy theme prints);
+- on the product page, for the country of the shop;
+- in the order confirmation e-mail, as it was at the time of the order.
+
+## Requirements
+
+- Thelia 3.3 or later. The module keeps no list of days off of its own: it counts on the delivery calendar of the core (Configuration > Delivery > Delivery dates), through `Thelia\Domain\Shipping\DeliveryDate\Service\DeliveryClosedDays`. Closed days of the week (of the shop or of a carrier) and the closures of the shop or of a carrier are all read from there.
+- The Flexy front-office theme (or any Twig theme that raises the `product.details.bottom` theme hook) for the product page; the checkout reads the dates from the API options.
 
 ## Installation
 
-### Manually
-
-* Copy the module into ```<thelia_root>/local/modules/``` directory and be sure that the name of the module is DeliveryDelay.
-* Activate it in your thelia administration panel
-
-### Composer
-
-Add it in your main thelia composer.json file
+Copy the module into `local/modules/DeliveryDelay` (the folder name must be `DeliveryDelay`), or install it with Composer:
 
 ```
-composer require thelia/delivery-delay-module:~1.0
+composer require thelia/delivery-delay-module
 ```
 
-## Usage
+Then activate it in the back office. Activating it creates its three tables (`delivery_delay_carrier`, `delivery_delay_product`, `delivery_delay_order_estimate`) with `CREATE TABLE IF NOT EXISTS`; nothing is ever dropped.
 
-This module have two different configuration :
+Version 3 does not read the data of version 2.x (`product_delay`, `undeliverable_date`): the delays have to be entered again, and the days off now come from the calendar of the core.
 
-1. Global and default configuration
------------------------------------
+## Configuration
 
-In module configuration you can set the minimum and the maximum delay by default it would be applied for each product without specific delay.
-You have 2 different, delivery and restock. Delivery is displayed when product have stock, and restock when product doesn't have stock.
+Module configuration page:
 
-In this page you can also choose if the weekend is not deliverable in this case saturdays and sundays will be excluded fot count of delivery date.
-You can do the same thing for the easter who is calculated dynamically in function of the year.
+| Setting | Meaning |
+|---|---|
+| Preparation (days) | Working days the carrier needs to get an order ready. Empty means 0. |
+| Transit minimum / maximum (days) | Working days between the departure and the arrival. Both are required, minimum at most maximum. |
+| Cut-off time | `HH:MM`. An order placed at or after this time starts the next working day. Empty: no cut-off. |
+| Carrier shown on the product page | Default: the first active delivery module (by position) that has delays. |
 
-And last things, you can exculde specific date like 1st January, 25 December or other dates.
+A carrier whose row is left empty has no delays and gets no estimate: its options keep the dates the carrier gave, and nothing breaks.
 
-2. Product configuration
-------------------------
+Product sheet, tab "Delivery delay":
 
-For each product you can specify different delay for delivery and restock, these delay will override default delay.
-Two others option are available for products, first you can set a pre order date with that the delay will be computed from this date and you can show a different message, 
-when the pre order date is passed the delivery date will be computed normally.
-And you can also said the product is only available on order and in this case don't display a delivery date just show a message with some explication.
+| Setting | Meaning |
+|---|---|
+| Availability delay (days) | Always added to the preparation, for a product made to order. |
+| Restock delay (days) | Added on top when the variant ordered is out of stock (quantity of 0 or less, product not virtual). |
 
-3. Usage
---------
+An empty field is "not filled in", `0` is a value; the two are kept apart.
 
-You have different way to show delivery delay.
-The module will automatically show delivery delay on the ```product.details-bottom``` hook.
-But you can deactivate it in back office and use the specific hook ```product.delivery-delay``` to put him where you want.
-Or you can use the loop describe below.
+Reading needs the right to see the module, writing the right to update it.
 
-## Hook
+## How the interval is computed
 
-### backoffice :
-- product.tab-content
-- product.edit-js
+Everything is counted in working days of the carrier: a day is open when the core calendar does not close it for that carrier. Today is read on the clock and in the time zone of the shop.
 
-### frontoffice :
-- product.details-bottom
-- product.delivery-delay
+1. The first working day is today when it is open and the cut-off time (if any) is not reached, the next open day otherwise.
+2. The effective preparation is the preparation of the carrier plus the delay of the slowest product of the cart (the maximum over the lines of availability delay, plus restock delay for a line out of stock).
+3. The first working day is the first day of preparation: the parcel leaves on the first working day plus `max(preparation - 1, 0)` open days.
+4. The earliest arrival is the departure plus the minimum transit in open days, the latest arrival the departure plus the maximum.
 
-## Loop
+Example: preparation 1, transit 2, order on Tuesday at 9:00 with no closure: the parcel leaves on Tuesday and arrives on Thursday. After the cut-off time it leaves on Wednesday and arrives on Friday. A holiday closed by the shop between the two moves the arrival by one day.
 
-[delivery_delay_product]
-------------------------
+The calendar is read once for a window of 120 days (longer only when the count needs it, up to about 2.6 years). A calendar with no open day gives no estimate instead of looping.
 
-### Input arguments
+`DeliveryDelay\Estimate\DeliveryEstimator` does the counting, with no state and no session or request: it works in a console command too.
 
-|Argument |Description |
-|---      |--- |
-|**product_id** | The id of the product |
+## When the dates are written
 
-### Output arguments
+- The options of a delivery module are filled by a listener of `MODULE_DELIVERY_GET_OPTIONS` at priority 100, after CustomDelivery (129) has written its empty dates.
+- The interval of an order is frozen once, when the order is placed (`ORDER_BEFORE_PAYMENT`, before the confirmation e-mail is built), in `delivery_delay_order_estimate`. It is never recomputed, and it outlives the carrier. The confirmation e-mail prints it after the addresses (`email-html.order-confirmation.after-address` and its `email-txt` twin), in the language of the order.
+- The product page estimate sets no cookie and no cache header: the page stays cacheable, so the dates can be up to the lifetime of the cache old.
 
-|Variable                   |Description |
-|---                        |--- |
-|$DELIVERY_TYPE             | The type of delivery (normal, pre-order, on order, ...) |
-|$DELIVERY_START_DATE       | The date from when the product delivery delay calcul start |
-|$DATE_MIN                  | The minimum date of delivery |
-|$DATE_MAX                  | The maximum date of delivery |
+## Tests
 
-### Exemple
+From the root of the Thelia project, after `ddev composer test:prepare` with the module active:
 
-```smarty
-    {loop type="delivery_delay_product" name="delivery_delay_product" product_id={$product_id}}
-        {if $PRE_ORDER }
-            {intl l="This product is on pre-order and will be only available from : "}{format_date date={$PRE_ORDER} output="date"}
-        {elseif $ON_ORDER === 1}
-            {intl l="This product is only available on order, contact us for more informations"}
-        {else}
-            {intl l="Delivery planned between %min and %max" min={format_date date={$DATE_MIN} output="date"} max={format_date date={$DATE_MAX} output="date"}}
-        {/if}
-    {/loop}
- ```
+```
+ddev exec composer phpc -- ./vendor/bin/phpunit -c local/modules/DeliveryDelay/phpunit.xml.dist
+```
+
+Suites: `unit` (the estimator), `integration` (options, frozen interval, e-mail, product page), `http` (back office).

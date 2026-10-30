@@ -1,8 +1,18 @@
 <?php
 
-return array(
-    'Delivery planned between %min and %max' => 'Date de livraison prévue entre le %min et le %max',
-    'Delivery planned for %date' => 'Livraison prévue le %date',
-    'This product is on pre-order and will be only available from : ' => 'Ce produit est en pré-commande et seras seulement disponible à partir du : ',
-    'This product is only available on order, contact us for more informations' => 'Ce produit est seulement disponible sur commande, contactez nous pour plus d\'informations.',
-);
+declare(strict_types=1);
+
+/*
+ * This file is part of the Thelia package.
+ * http://www.thelia.net
+ *
+ * (c) OpenStudio <info@thelia.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+return [
+    'Estimated delivery (%country%): %date%' => 'Livraison estimée (%country%) : %date%',
+    'Estimated delivery (%country%): between %earliest% and %latest%' => 'Livraison estimée (%country%) : entre le %earliest% et le %latest%',
+];
